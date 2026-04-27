@@ -38,6 +38,13 @@ function formatModelName(modelId: string): string {
 		'kosmos': 'Kosmos',
 		'vila': 'VILA',
 		'microsoft': 'Microsoft',
+		'deepseek': 'DeepSeek',
+		'qwen': 'Qwen',
+		'google': 'Google',
+		'gemma': 'Gemma',
+		'phi': 'Phi',
+		'gpt': 'GPT',
+		'nemotron': 'Nemotron',
 	};
 	
 	return modelName
@@ -259,15 +266,22 @@ export class NvidiaNimImage implements INodeType {
 					const models = response.data || [];
 					
 					// Filter for vision/language models and format for n8n
-					// Only include Llama models for image analysis
 					const results = models
 						.filter((model: NvidiaModel) => {
-							// Include only Llama models that support vision tasks
 							const modelId = model.id || model.model || '';
-							// Convert to lowercase for case-insensitive matching
 							const lowerModelId = modelId.toLowerCase();
 							return modelId && (
-								lowerModelId.includes('llama') && lowerModelId.includes('vision')
+								lowerModelId.includes('vision') ||
+								lowerModelId.includes('multimodal') ||
+								lowerModelId.includes('vlm') ||
+								lowerModelId.includes('vila') ||
+								lowerModelId.includes('fuyu') ||
+								lowerModelId.includes('kosmos') ||
+								lowerModelId.includes('neva') ||
+								lowerModelId.includes('paligemma') ||
+								lowerModelId.includes('grounding') ||
+								lowerModelId.includes('dinov2') ||
+								lowerModelId.includes('clip')
 							);
 						})
 						.map((model: NvidiaModel) => {
@@ -289,11 +303,29 @@ export class NvidiaNimImage implements INodeType {
 					};
 				} catch (error) {
 					// Fallback to default vision models if API fails
-					// Only include Llama models
 					return {
 						results: [
 							{ name: 'Llama 3.2 11B Vision', value: 'meta/llama-3.2-11b-vision-instruct' },
 							{ name: 'Llama 3.2 90B Vision', value: 'meta/llama-3.2-90b-vision-instruct' },
+							{ name: 'Llama 4 Maverick 17B', value: 'meta/llama-4-maverick-17b-128e-instruct' },
+							{ name: 'Phi 3.5 Vision Instruct', value: 'microsoft/phi-3.5-vision-instruct' },
+							{ name: 'Phi 4 Multimodal Instruct', value: 'microsoft/phi-4-multimodal-instruct' },
+							{ name: 'Gemma 3 27B IT', value: 'google/gemma-3-27b-it' },
+							{ name: 'Gemma 3n E2B IT', value: 'google/gemma-3n-e2b-it' },
+							{ name: 'Gemma 3n E4B IT', value: 'google/gemma-3n-e4b-it' },
+							{ name: 'Gemma 4 31B IT', value: 'google/gemma-4-31b-it' },
+							{ name: 'Nemotron Nano VL 8B V1', value: 'nvidia/llama-3.1-nemotron-nano-vl-8b-v1' },
+							{ name: 'Nemotron Nano 12B V2 VL', value: 'nvidia/nemotron-nano-12b-v2-vl' },
+							{ name: 'Mistral Small 3.1 24B', value: 'mistralai/mistral-small-3.1-24b-instruct-2503' },
+							{ name: 'Mistral Small 4 119B', value: 'mistralai/mistral-small-4-119b-2603' },
+							{ name: 'Mistral Medium 3 Instruct', value: 'mistralai/mistral-medium-3-instruct' },
+							{ name: 'Mistral Large 3 675B', value: 'mistralai/mistral-large-3-675b-instruct-2512' },
+							{ name: 'Ministral 14B Instruct', value: 'mistralai/ministral-14b-instruct-2512' },
+							{ name: 'Kimi K2.5', value: 'moonshotai/kimi-k2-5' },
+							{ name: 'Qwen 3.5 397B A17B', value: 'qwen/qwen3.5-397b-a17b' },
+							{ name: 'PaLIGemma', value: 'google/paligemma' },
+							{ name: 'VILA', value: 'nvidia/vila' },
+							{ name: 'Nemotron 3 Content Safety', value: 'nvidia/nemotron-3-content-safety' },
 						],
 					};
 				}
