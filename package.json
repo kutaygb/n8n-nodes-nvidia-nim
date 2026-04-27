@@ -46,8 +46,13 @@
 		],
 		"nodes": [
 			"dist/nodes/NvidiaNim/NvidiaNim.node.js",
-			"dist/nodes/NvidiaNim/NvidiaNimImage.node.js"
+			"dist/nodes/NvidiaNim/NvidiaNimImage.node.js",
+			"dist/nodes/NvidiaNim/LmChatNvidiaNim.node.js"
 		]
+	},
+	"dependencies": {
+		"@langchain/core": "^0.3.78",
+		"@langchain/openai": "^0.6.14"
 	},
 	"devDependencies": {
 		"@typescript-eslint/parser": "^6.0.0",
